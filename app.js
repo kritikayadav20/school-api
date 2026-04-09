@@ -5,12 +5,13 @@ require("dotenv").config();
 const app = express();
 app.use(express.json());
 
-// DB Connection
+// DB Connection 
 const db = mysql.createConnection({
   host: process.env.DB_HOST,
   user: process.env.DB_USER,
   password: process.env.DB_PASSWORD,
   database: process.env.DB_NAME,
+  port: process.env.DB_PORT, 
 });
 
 db.connect((err) => {
@@ -42,6 +43,7 @@ function calculateDistance(lat1, lon1, lat2, lon2) {
 // Add School API
 // --------------------
 app.post("/addSchool", (req, res) => {
+  console.log("DB HOST:", process.env.DB_HOST);
   const { name, address, latitude, longitude } = req.body;
 
   if (!name || !address || isNaN(latitude) || isNaN(longitude)) {
@@ -52,7 +54,10 @@ app.post("/addSchool", (req, res) => {
     "INSERT INTO schools (name, address, latitude, longitude) VALUES (?, ?, ?, ?)";
 
   db.query(sql, [name, address, latitude, longitude], (err, result) => {
-    if (err) return res.status(500).json(err);
+    if (err) {
+      console.error(err);
+      return res.status(500).json({ message: "Database error" });
+    }
 
     res.json({ message: "School added successfully" });
   });
@@ -69,7 +74,10 @@ app.get("/listSchools", (req, res) => {
   }
 
   db.query("SELECT * FROM schools", (err, results) => {
-    if (err) return res.status(500).json(err);
+    if (err) {
+      console.error(err);
+      return res.status(500).json({ message: "Database error" });
+    }
 
     const schools = results.map((school) => {
       const distance = calculateDistance(
@@ -88,8 +96,9 @@ app.get("/listSchools", (req, res) => {
 });
 
 // --------------------
-// Start Server
-// --------------------
-app.listen(3000, () => {
-  console.log("Server running on port 3000");
+// Start Server 
+const PORT = process.env.PORT || 3000;
+
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
 });
