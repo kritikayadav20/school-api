@@ -1,37 +1,41 @@
+````markdown
 # School Management API
 
 A backend API built using Node.js, Express.js, and MySQL to manage school data.  
-It allows users to add schools and retrieve a list of schools sorted by proximity.
+It allows users to add schools and retrieve a list of schools sorted by proximity to a given location.
 
 ---
 
-## 🚀 Features
+## Features
 
-- Add new schools with location details  
-- Fetch schools sorted by distance from user location  
+- Add new schools with name, address, latitude, and longitude  
+- Fetch all schools sorted by distance from user location  
 - Distance calculated using Haversine formula  
+- Uses cloud-hosted MySQL database  
 
 ---
 
-## 🛠️ Tech Stack
+## Tech Stack
 
 - Node.js  
 - Express.js  
 - MySQL  
+- Railway (Database hosting)  
+- Render (Backend hosting)  
 
 ---
 
-## 📌 API Endpoints
+## API Endpoints
 
-### 1. Add School
+### Add School
 
-- **URL:** `/addSchool`  
-- **Method:** `POST`  
+- **URL:** `https://school-api-zijo.onrender.com/addSchool`  
+- **Method:** `POST`
 
 #### Request Body:
 ```json
 {
-  "name": "ABC School",
+  "name": "Test School",
   "address": "Nagpur",
   "latitude": 21.1458,
   "longitude": 79.0882
@@ -47,9 +51,9 @@ It allows users to add schools and retrieve a list of schools sorted by proximit
 
 ---
 
-### 2. List Schools
+### List Schools
 
-- **URL:** `/listSchools?lat=21.14&lon=79.08`
+- **URL:** `https://school-api-zijo.onrender.com/listSchools?lat=21.14&lon=79.08`
 - **Method:** `GET`
 
 #### Response:
@@ -57,22 +61,38 @@ It allows users to add schools and retrieve a list of schools sorted by proximit
 [
   {
     "id": 1,
-    "name": "ABC School",
+    "name": "Test School",
     "address": "Nagpur",
     "latitude": 21.1458,
     "longitude": 79.0882,
-    "distance": 1.06
+    "distance": 1.07
+  },
+  {
+    "id": 2,
+    "name": "School 2",
+    "address": "Mumbai",
+    "latitude": 19.076,
+    "longitude": 72.8777,
+    "distance": 687.01
+  },
+  {
+    "id": 3,
+    "name": "School 3",
+    "address": "Delhi",
+    "latitude": 28.7041,
+    "longitude": 77.1025,
+    "distance": 864.35
   }
 ]
 ```
 
 ---
 
-## ⚙️ Setup Instructions
+## Setup Instructions
 
 1. Clone the repository
 ```bash
-git clone https://github.com/your-username/school-api.git
+git clone https://github.com/kritikayadav20/school-api.git
 cd school-api
 ```
 
@@ -83,10 +103,11 @@ npm install
 
 3. Create `.env` file
 ```
-DB_HOST=localhost
+DB_HOST=mainline.proxy.rlwy.net
 DB_USER=root
-DB_PASSWORD=yourpassword
-DB_NAME=school_db
+DB_PASSWORD=your_password
+DB_NAME=railway
+DB_PORT=29456
 ```
 
 4. Run the server
@@ -96,7 +117,7 @@ node app.js
 
 ---
 
-## 📦 Database Schema
+## Database Schema
 
 ```sql
 CREATE TABLE schools (
@@ -110,12 +131,13 @@ CREATE TABLE schools (
 
 ---
 
-## 🌐 Live API
+## Live API
 
-(Add your deployed link here)
+https://school-api-zijo.onrender.com
 
 ---
 
-## 📬 Postman Collection
+## Postman Collection
 
-(Add your Postman collection link here)
+https://github.com/kritikayadav20/school-api/blob/main/School%20API.postman_collection.json
+````
